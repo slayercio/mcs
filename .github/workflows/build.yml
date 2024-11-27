@@ -5,43 +5,33 @@ on:
     pull_request: {}
 
 jobs:
-    Build_Windows:
-        name: Build windows
-        runs-on: [windows]
-
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-              with:
-                submodules: recursive
-            - name: Running cmake
-              run: |
-                cd ${{ github.workspace }}
-                mkdir build
-                cd build
-                cmake .. -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}
-            - name: Build
-              run: |
-                cd build
-                MSBuild.exe mcs.sln
-    Build_Linux:
-        name: Build linux
+    Build:
+        name: Build ${{matrix.config.name}}
         runs-on: [ubuntu-latest]
+        strategy:
+            matrix:
+                type: [Debug, Release]
+                config:
+                    - { name: "Windows MSVC", os: windows-latest, cc: "cl", cxx: "cl" }
+                    - { name: "Linux GCC", os: ubuntu-latest, cc: "gcc", cxx: "g++" }
+                    - { name: "MacOS Clang", os: macos-latest, cc: "clang", cxx: "clang++" }
 
         steps:
             - name: Checkout
               uses: actions/checkout@v4
               with:
                 submodules: recursive
-            - name: Running cmake
-              env:
-                CMAKE_CXX_COMPILER: g++
-              run: |
-                cd ${{github.workspace}}
-                mkdir build
-                cd build
-                cmake .. -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}
-            - name: Build
-              run: |
-                cd build
-                cmake --build .
+
+            - name: Setup Ninja
+              uses: ashutoshvarma/setup-ninja@master
+              with:
+                version: 1.10.0
+            
+            - name: Build with CMake
+              uses: ashutoshvarma/action-cmake-build@master
+              with:
+                build-dir: ${{github.workspace}}/build
+                cc: ${{matrix.config.cc}}
+                cxx: ${{matrix.config.cxx}}
+                configure-options: -G "Ninja"
+                build-type: ${{matrix.type}}
