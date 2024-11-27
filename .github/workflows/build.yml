@@ -6,8 +6,8 @@ on:
 
 jobs:
     Build:
-        name: Build ${{matrix.config.name}}
-        runs-on: [ubuntu-latest]
+        name: Build ${{matrix.config.name}} ${{matrix.type}}
+        runs-on: ${{matrix.config.os}}
         strategy:
             matrix:
                 type: [Debug, Release]
@@ -33,5 +33,5 @@ jobs:
                 build-dir: ${{github.workspace}}/build
                 cc: ${{matrix.config.cc}}
                 cxx: ${{matrix.config.cxx}}
-                configure-options: -G "Ninja"
+                configure-options: -G Ninja
                 build-type: ${{matrix.type}}
