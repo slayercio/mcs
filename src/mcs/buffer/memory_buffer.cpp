@@ -1,4 +1,5 @@
 #include <mcs/buffer/impl/memory_buffer.hpp>
+#include <mcs/common/memory.hpp>
 
 namespace mcs
 {
@@ -130,7 +131,7 @@ namespace mcs
         auto data = read_bytes(size);
 
         char* data_copy = new char[size];
-        memcpy(data_copy, data.data(), size);
+        COPY_MEMORY(data_copy, data.data(), size);
 
         return JString(size, data_copy);
     }
@@ -147,7 +148,7 @@ namespace mcs
         auto bytes = read_bytes(size);
         auto copy = new mcs_byte[size];
 
-        memcpy(copy, bytes.data(), size);
+        COPY_MEMORY(copy, bytes.data(), size);
 
         return new MemoryBuffer(size, copy);
     }
@@ -158,7 +159,7 @@ namespace mcs
         auto bytes = read_bytes(lengthRemaining);
         auto copy = new mcs_byte[lengthRemaining];
         
-        memcpy(copy, bytes.data(), lengthRemaining);
+        COPY_MEMORY(copy, bytes.data(), lengthRemaining);
 
         return new MemoryBuffer(lengthRemaining, copy);
     }

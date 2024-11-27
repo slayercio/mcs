@@ -2,6 +2,7 @@
 
 #include <asio.hpp>
 #include <iostream>
+#include <mcs/common/memory.hpp>
 
 namespace mcs::test
 {
@@ -27,10 +28,10 @@ namespace mcs::test
                 std::cout << "sending packet!" << std::endl;
                 unsigned char* data = new unsigned char[8];
 
-                memcpy(data, &packet.id, sizeof(packet.id));
+                COPY_MEMORY(data, &packet.id, sizeof(packet.id));
                 size_t wroteBytes = co_await asio::async_write(socket, asio::buffer(data, sizeof(packet.id)), asio::use_awaitable);
 
-                memcpy(data, &packet.data_size, sizeof(packet.data_size));
+                COPY_MEMORY(data, &packet.data_size, sizeof(packet.data_size));
                 wroteBytes += co_await asio::async_write(socket, asio::buffer(data, sizeof(packet.data_size)), asio::use_awaitable);
                 wroteBytes += co_await asio::async_write(socket, asio::buffer(packet.data, packet.data_size), asio::use_awaitable);
 
