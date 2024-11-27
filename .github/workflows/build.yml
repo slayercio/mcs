@@ -1,0 +1,45 @@
+on:
+    push:
+        branches:
+            - master
+    pull_request: {}
+
+jobs:
+    Build_Windows:
+        name: Build windows
+        runs-on: [windows]
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                submodules: recursive
+            - name: Running cmake
+              run: |
+                cd ${{ github.workspace }}
+                mkdir build
+                cd build
+                cmake .. -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}
+            - name: Build
+              run: |
+                cd build
+                MSBuild.exe mcs.sln
+    Build_Linux:
+        name: Build linux
+        runs-on: [ubuntu-latest]
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                submodules: recursive
+            - name: Running cmake
+              run: |
+                cd ${{github.workspace}}
+                mkdir build
+                cd build
+                cmake .. -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}
+            - name: Build
+              run: |
+                cd build
+                cmake --build .
