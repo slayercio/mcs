@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <string>
+#include <stdexcept>
 
 namespace mcs
 {
@@ -70,7 +71,9 @@ namespace mcs
 
         static JString from_buffer()
         {
-            throw std::exception("Not implemented");
+            throw std::runtime_error("Not implemented");
+
+            return JString(0, nullptr);
         }
     public:
         std::string to_string()
