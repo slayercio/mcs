@@ -1,4 +1,8 @@
+#include <mcs/common/linker.hpp>
+#ifdef _OS_WINDOWS
 #define _WIN32_WINNT 0x0A00
+#endif
+
 
 #include <mcs/common/module.hpp>
 #include <mcs/networking/networking.hpp>
@@ -6,6 +10,7 @@
 #include <mcs/logger.hpp>
 #include <mcs/core/core.hpp>
 #include <stdexcept>
+
 
 struct Networking_Internal: public mcs::modules::Networking
 {

@@ -40,7 +40,7 @@ namespace mcs::modules { \
     void* _Create_##name(void* core) { \
         auto mod = new name##_Internal{core}; \
         if(core) { \
-            reinterpret_cast<mcs::modules::Core*>(core)->set_module(#name, mod);        \
+            reinterpret_cast<mcs::modules::Core*>(core)->set_module(#name, mod);\
         }\
         return mod;\
     } \
