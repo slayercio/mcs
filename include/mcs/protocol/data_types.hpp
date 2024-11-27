@@ -13,8 +13,8 @@ namespace mcs
     using mcs_uint    = uint32_t;
     using mcs_long    = int64_t;
     using mcs_ulong   = uint64_t;
-    using mcs_float   = float_t;
-    using mcs_double  = double_t;
+    using mcs_float   = float;
+    using mcs_double  = double;
 
     using mcs_varint  = mcs_int;
     using mcs_varlong = mcs_long;
